@@ -1,0 +1,40 @@
+CROSS_HOST="x86_64-w64-mingw32"
+inherit cross
+
+NAME="mingw64-x86_64-icu"
+VERSION=49.1.2
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="International Components for Unicode for Win64 toolchain"
+HOMEPAGE="http://icu-project.org/"
+SRC_URI="http://download.icu-project.org/files/icu4c/${VERSION}/icu4c-${VERSION//./_}-src.tgz"
+SRC_DIR="icu/source"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-crossbuild.patch
+	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-mingw-w64-mkdir-compatibility.patch
+	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-use-correct-genccode-assembly-on-win32-and-win64.patch
+"
+src_compile() {
+	mkdir -p ${B}/cross-build
+	cd ${B}/cross-build
+	cygconf --host=$(sh ${S}/config.guess) CC=gcc CXX=g++
+	cygmake
+	cd ${B}
+	cygconf --with-cross-build=${B}/cross-build \
+		--with-data-packaging=library \
+		ac_cv_search_dlopen=no
+	cygmake
+}
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	mv ${D}${CROSS_LIBDIR}/icu*${VERSION%%.*}.dll ${D}${CROSS_BINDIR}/
+	rm -f ${D}${CROSS_BINDIR}/*.exe
+	rm -f ${D}${CROSS_LIBDIR}/*.dll
+	rm -f ${D}${CROSS_LIBDIR}/*${VERSION%%.*}.dll.a
+	rm -fr ${D}${CROSS_DATADIR}/man/
+}
+
+DOCS="../license.html ../readme.html ../unicode-license.txt ../packaging/PACKAGES"
