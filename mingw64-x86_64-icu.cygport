@@ -2,7 +2,7 @@ CROSS_HOST="x86_64-w64-mingw32"
 inherit cross
 
 NAME="mingw64-x86_64-icu"
-VERSION=49.1.2
+VERSION=51.2
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="International Components for Unicode for Win64 toolchain"
