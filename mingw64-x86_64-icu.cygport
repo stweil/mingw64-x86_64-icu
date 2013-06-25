@@ -13,11 +13,20 @@ PATCH_URI="
 	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-crossbuild.patch
 	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-mingw-w64-mkdir-compatibility.patch
 	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-use-correct-genccode-assembly-on-win32-and-win64.patch
+	51.1-cygwin-no-w32api.patch
+	51.1-cygwin-tests.patch
+	51.1-cygwin-tools.patch
+	51.1-cygwin-x64.patch
+	51.2-build-order.patch
 "
+
+# created by cygwin-x64.patch
+DISTCLEANFILES="config/mh-cygwin64"
+
 src_compile() {
 	mkdir -p ${B}/cross-build
 	cd ${B}/cross-build
-	cygconf --host=$(sh ${S}/config.guess) CC=gcc CXX=g++
+	cygconf --build=$(sh ${S}/config.guess) --host=$(sh ${S}/config.guess) CC=gcc CXX=g++
 	cygmake
 	cd ${B}
 	cygconf --with-cross-build=${B}/cross-build \
@@ -31,6 +40,7 @@ src_install() {
 	cyginstall
 
 	mv ${D}${CROSS_LIBDIR}/icu*${VERSION%%.*}.dll ${D}${CROSS_BINDIR}/
+	mv ${D}${CROSS_LIBDIR}/cygicudt${VERSION%%.*}.dll ${D}${CROSS_BINDIR}/icudt${VERSION%%.*}.dll
 	rm -f ${D}${CROSS_BINDIR}/*.exe
 	rm -f ${D}${CROSS_LIBDIR}/*.dll
 	rm -f ${D}${CROSS_LIBDIR}/*${VERSION%%.*}.dll.a
