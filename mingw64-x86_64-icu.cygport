@@ -3,7 +3,7 @@ inherit cross
 
 NAME="mingw64-x86_64-icu"
 VERSION=51.2
-RELEASE=1
+RELEASE=2
 CATEGORY="Devel"
 SUMMARY="International Components for Unicode for Win64 toolchain"
 HOMEPAGE="http://icu-project.org/"
@@ -18,12 +18,15 @@ PATCH_URI="
 	51.1-cygwin-tools.patch
 	51.1-cygwin-x64.patch
 	51.2-build-order.patch
+	51.2-mingw64.patch
 "
 
 # created by cygwin-x64.patch
 DISTCLEANFILES="config/mh-cygwin64"
 
 src_compile() {
+	cd ${S}
+	cygautoreconf
 	mkdir -p ${B}/cross-build
 	cd ${B}/cross-build
 	cygconf --build=$(sh ${S}/config.guess) --host=$(sh ${S}/config.guess) CC=gcc CXX=g++
