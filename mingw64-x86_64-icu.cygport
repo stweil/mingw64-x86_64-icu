@@ -10,9 +10,7 @@ HOMEPAGE="http://icu-project.org/"
 SRC_URI="http://download.icu-project.org/files/icu4c/${VERSION}/icu4c-${VERSION//./_}-src.tgz"
 SRC_DIR="icu/source"
 PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-crossbuild.patch
 	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-mingw-w64-mkdir-compatibility.patch
-	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-use-correct-genccode-assembly-on-win32-and-win64.patch
 	51.1-cygwin-no-w32api.patch
 	51.1-cygwin-tests.patch
 	51.1-cygwin-tools.patch
