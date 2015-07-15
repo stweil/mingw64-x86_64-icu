@@ -3,7 +3,7 @@ inherit cross
 
 NAME="mingw64-x86_64-icu"
 VERSION=51.2
-RELEASE=2
+RELEASE=3
 CATEGORY="Devel"
 SUMMARY="International Components for Unicode for Win64 toolchain"
 HOMEPAGE="http://icu-project.org/"
