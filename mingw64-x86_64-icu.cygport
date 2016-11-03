@@ -2,25 +2,17 @@ CROSS_HOST="x86_64-w64-mingw32"
 inherit cross
 
 NAME="mingw64-x86_64-icu"
-VERSION=51.2
-RELEASE=3
+VERSION=57.1
+RELEASE=1
 CATEGORY="Devel"
 SUMMARY="International Components for Unicode for Win64 toolchain"
 HOMEPAGE="http://icu-project.org/"
 SRC_URI="http://download.icu-project.org/files/icu4c/${VERSION}/icu4c-${VERSION//./_}-src.tgz"
 SRC_DIR="icu/source"
 PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/mingw-icu.git/plain/icu4c-4_6_1-mingw-w64-mkdir-compatibility.patch
-	51.1-cygwin-no-w32api.patch
-	51.1-cygwin-tests.patch
-	51.1-cygwin-tools.patch
-	51.1-cygwin-x64.patch
-	51.2-build-order.patch
-	51.2-mingw64.patch
+	http://pkgs.fedoraproject.org/cgit/rpms/mingw-icu.git/plain/icu4c-56_1-crossbuild.patch
+	57.1-cygwin-no-w32api.patch
 "
-
-# created by cygwin-x64.patch
-DISTCLEANFILES="config/mh-cygwin64"
 
 src_compile() {
 	cd ${S}
