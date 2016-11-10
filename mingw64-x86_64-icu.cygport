@@ -3,7 +3,7 @@ inherit cross
 
 NAME="mingw64-x86_64-icu"
 VERSION=57.1
-RELEASE=1
+RELEASE=2
 CATEGORY="Devel"
 SUMMARY="International Components for Unicode for Win64 toolchain"
 HOMEPAGE="http://icu-project.org/"
@@ -11,6 +11,7 @@ SRC_URI="http://download.icu-project.org/files/icu4c/${VERSION}/icu4c-${VERSION/
 SRC_DIR="icu/source"
 PATCH_URI="
 	http://pkgs.fedoraproject.org/cgit/rpms/mingw-icu.git/plain/icu4c-56_1-crossbuild.patch
+	http://pkgs.fedoraproject.org/cgit/rpms/icu.git/plain/rhbz1360340-icu-changeset-39109.patch
 	57.1-cygwin-no-w32api.patch
 "
 
