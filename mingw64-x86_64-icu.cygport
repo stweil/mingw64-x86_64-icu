@@ -2,16 +2,15 @@ CROSS_HOST="x86_64-w64-mingw32"
 inherit cross
 
 NAME="mingw64-x86_64-icu"
-VERSION=63.1
+VERSION=64.2
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="International Components for Unicode for Win64 toolchain"
 HOMEPAGE="http://icu-project.org/"
 SRC_URI="http://download.icu-project.org/files/icu4c/${VERSION}/icu4c-${VERSION//./_}-src.tgz"
 SRC_DIR="icu/source"
-PATCH_URI="
-	mingw64-x86_64-icu-63.1-1.src.patch
-"
+
+DEPEND="python3"
 
 src_compile() {
 	cd ${S}
@@ -22,7 +21,6 @@ src_compile() {
 	cygmake
 	cd ${B}
 	cygconf --with-cross-build=${B}/cross-build \
-		--with-data-packaging=library \
 		ac_cv_search_dlopen=no
 	cygmake
 }
@@ -31,11 +29,18 @@ src_install() {
 	cd ${B}
 	cyginstall
 
+	rm -f ${D}${CROSS_BINDIR}/*.exe
 	mv ${D}${CROSS_LIBDIR}/icu*${VERSION%%.*}.dll ${D}${CROSS_BINDIR}/
 	mv ${D}${CROSS_LIBDIR}/cygicudt${VERSION%%.*}.dll ${D}${CROSS_BINDIR}/icudt${VERSION%%.*}.dll
-	rm -f ${D}${CROSS_BINDIR}/*.exe
 	rm -f ${D}${CROSS_LIBDIR}/*.dll
 	rm -f ${D}${CROSS_LIBDIR}/*${VERSION%%.*}.dll.a
+	# create versioned implib symlinks
+	pushd ${D}${CROSS_LIBDIR}
+	for l in *.dll.a; do
+		echo dosym ${l} ${CROSS_LIBDIR}/${l/.dll.a/${VERSION%%.*}.dll.a}
+		dosym ${l} ${CROSS_LIBDIR}/${l/.dll.a/${VERSION%%.*}.dll.a}
+	done
+	popd
 	rm -fr ${D}${CROSS_DATADIR}/man/
 }
 
